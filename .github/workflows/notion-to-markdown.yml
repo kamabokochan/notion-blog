@@ -22,14 +22,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # https://github.com/marketplace/actions/checkout
-      # - uses: actions/checkout@v4
-      #   with:
-      #     ref: main
+      - uses: actions/checkout@v4
+        with:
+          ref: main
       # https://github.com/marketplace/actions/setup-node-js-environment
-      # - uses: actions/setup-node@v4.0.2
-      #   with:
-      #     node-version: latest
-      #     cache: "npm"
+      - uses: actions/setup-node@v4.0.2
+        with:
+          node-version: latest
+          cache: "npm"
       - run: touch .env
           echo "NOTION_AUTH_TOKEN=${{ secrets.TEST }}" >> .env
           cat .env
@@ -38,8 +38,8 @@ jobs:
       #     echo "NOTION_AUTH_TOKEN=${{ secrets.NOTION_AUTH_TOKEN }}" >> .env
       # - run: npm run notion-fetch
       # https://github.com/marketplace/actions/create-pull-request
-      # - uses: peter-evans/create-pull-request@v6
-      #   with:
-      #     commit-message: update markdown
-      #     delete-branch: true
-      #     title: update markdown
+      - uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: update markdown
+          delete-branch: true
+          title: update markdown
