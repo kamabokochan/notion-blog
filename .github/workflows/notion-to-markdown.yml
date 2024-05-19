@@ -33,6 +33,7 @@ jobs:
       - run: npm ci
         env:
           NOTION_AUTH_TOKEN: ${{ secrets.NOTION_AUTH_TOKEN }}
+      - run: touch .env
       - run: npm run notion-fetch
       # https://github.com/marketplace/actions/create-pull-request
       - uses: peter-evans/create-pull-request@v6
