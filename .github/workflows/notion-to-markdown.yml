@@ -30,6 +30,8 @@ jobs:
         with:
           node-version: latest
           cache: "npm"
+      - name: test secrets
+        run: echo secret "${{ secrets.TEST }}"
       - run: npm ci
       - run: touch .env
           echo "NOTION_AUTH_TOKEN=${{ secrets.NOTION_AUTH_TOKEN }}" >> .env
