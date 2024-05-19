@@ -30,13 +30,10 @@ jobs:
         with:
           node-version: latest
           cache: "npm"
-      - run: touch .env
-          echo "NOTION_AUTH_TOKEN=${{ secrets.TEST }}" >> .env
-          cat .env
-      # - run: npm ci
-      # - run: touch .env
-      #     echo "NOTION_AUTH_TOKEN=${{ secrets.NOTION_AUTH_TOKEN }}" >> .env
-      # - run: npm run notion-fetch
+      - run: npm ci
+        env:
+          NOTION_AUTH_TOKEN: ${{ secrets.NOTION_AUTH_TOKEN }}
+      - run: npm run notion-fetch
       # https://github.com/marketplace/actions/create-pull-request
       - uses: peter-evans/create-pull-request@v6
         with:
