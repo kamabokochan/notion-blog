@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "notion-fetch": "npx tsx --env-file .env notion/index.ts"
+    "notion-fetch": "tsx --env-file .env notion/index.ts"
   },
   "dependencies": {
     "@notionhq/client": "^2.2.15",
@@ -33,6 +33,7 @@
     "prettier": "^3.2.5",
     "prettier-plugin-organize-imports": "^3.2.4",
     "tailwindcss": "^3.4.1",
+    "tsx": "^4.10.5",
     "typescript": "^5"
   }
 }
