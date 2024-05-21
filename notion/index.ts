@@ -1,5 +1,5 @@
 import { Client } from "@notionhq/client";
-import { writeFile } from "node:fs";
+import { writeFile } from "fs";
 import { NotionToMarkdown } from "notion-to-md";
 
 const { NOTION_AUTH_TOKEN } = process.env;
@@ -18,10 +18,27 @@ const notion = new Client({
 const n2m = new NotionToMarkdown({ notionClient: notion });
 
 (async () => {
-  const mdblocks = await n2m.pageToMarkdown("8418b49d75654f188f2b67373b67746b");
-  const mdString = n2m.toMarkdownString(mdblocks);
+  const databaseId = "044ded07ab224cd1b2e1b853550740d0";
 
-  writeFile("./notion/sample.md", mdString.parent, (err) => {
-    console.error(err);
+  const response = await notion.databases.query({
+    database_id: databaseId,
+  });
+
+  // console.log(response.results[0].id);
+
+  response.results.forEach(async (block) => {
+    const blockId = block.id;
+    console.log(blockId);
+    const mdblocks = await n2m.pageToMarkdown(blockId);
+    const mdString = n2m.toMarkdownString(mdblocks).parent;
+
+    if (typeof mdString !== "string") {
+      // string以外は許容しない
+      return;
+    }
+
+    writeFile(`notion/post/${blockId}.md`, mdString, (err) => {
+      console.error(err);
+    });
   });
 })();

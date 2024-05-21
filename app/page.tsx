@@ -1,46 +1,40 @@
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Client } from "@notionhq/client";
 
-// ;(async () => {
-//   const blockId = '8418b49d75654f188f2b67373b67746b';
-//   const response = await notion.blocks.children.list({
-//     block_id: blockId,
-//     page_size: 50,
-//   });
-//   console.log(JSON.stringify(response));
+const { NOTION_AUTH_TOKEN } = process.env;
 
-//   // const blockId2 = response.results[0].id;
-//   // const response2 = await notion.blocks.retrieve({
-//   //     block_id: blockId2,
-//   // });
-//   // console.log(`----`)
-//   // console.log(response2.paragraph);
-// })();
+if (!NOTION_AUTH_TOKEN) {
+  console.error("NOTION_AUTH_TOKEN is not found");
+  process.exit(1);
+}
 
-export default function Home() {
+// Initializing a client
+const notion = new Client({
+  auth: process.env.NOTION_AUTH_TOKEN,
+});
+
+async function fetchBlogPosts() {
+  const databaseId = "044ded07ab224cd1b2e1b853550740d0";
+
+  const response = await notion.databases.query({
+    database_id: databaseId,
+  });
+
+  return response;
+}
+
+export default async function Home() {
+  const response = await fetchBlogPosts();
   return (
-    <main>
-      <p>hello</p>
-      <Button>Click me</Button>
-      <Card>
-        <CardHeader>
-          <CardTitle>Card Title</CardTitle>
-          <CardDescription>Card Description</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p>Card Content</p>
-        </CardContent>
-        <CardFooter>
-          <p>Card Footer</p>
-        </CardFooter>
-      </Card>
-    </main>
+    <ul>
+      {response.results.map((post, index) => {
+        return (
+          <li key={post.id}>
+            <a href={`/blog/${post.id}`}>
+              {response.results[index].properties["名前"].title[0].text.content}
+            </a>
+          </li>
+        );
+      })}
+    </ul>
   );
 }
