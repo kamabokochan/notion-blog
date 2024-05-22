@@ -1,4 +1,6 @@
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { Client } from "@notionhq/client";
+import { PartialDatabaseObjectResponse } from "@notionhq/client/build/src/api-endpoints";
 
 const { NOTION_AUTH_TOKEN } = process.env;
 
@@ -17,6 +19,7 @@ async function fetchBlogPosts() {
 
   const response = await notion.databases.query({
     database_id: databaseId,
+    filter_properties: ["title"],
   });
 
   return response;
@@ -25,12 +28,28 @@ async function fetchBlogPosts() {
 export default async function Home() {
   const response = await fetchBlogPosts();
   return (
-    <ul>
+    <ul className="grid grid-cols-3 gap-8 max-w-5xl mx-auto p-10">
       {response.results.map((post, index) => {
         return (
           <li key={post.id}>
             <a href={`/blog/${post.id}`}>
-              {response.results[index].properties["名前"].title[0].text.content}
+              <Card className="h-full">
+                <CardHeader>
+                  <CardTitle className="text-base">
+                    {
+                      (response.results[index] as PartialDatabaseObjectResponse)
+                        .properties["名前"].title[0].text.content
+                    }
+                  </CardTitle>
+                  {/* <CardDescription>Card Description</CardDescription> */}
+                </CardHeader>
+                {/* <CardContent>
+                  <p>Card Content</p>
+                </CardContent> */}
+                {/* <CardFooter>
+                  <p>Card Footer</p>
+                </CardFooter> */}
+              </Card>
             </a>
           </li>
         );

@@ -1,4 +1,4 @@
-import fs from "fs/promises"; // Node.jsのプロミス版fsモジュールを使用
+import fs from "fs/promises";
 import "zenn-content-css";
 import markdownHtml from "zenn-markdown-html";
 
