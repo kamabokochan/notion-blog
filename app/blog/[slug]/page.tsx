@@ -29,6 +29,8 @@ export default async function Blog({ params }: { params: { slug: string } }) {
     return <></>;
   }
   return (
-    <div className="znc" dangerouslySetInnerHTML={{ __html: htmlContent }} />
+    <div className="max-w-5xl mx-auto p-10">
+      <div className="znc" dangerouslySetInnerHTML={{ __html: htmlContent }} />
+    </div>
   );
 }
