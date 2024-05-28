@@ -16,5 +16,5 @@
 	- アジャイル
 - ソフトウェア開発においては、顧客向けに提供するサービスでは特にまとまってどんと大きな機能がリリースされるよりも、段階的に早期に最低限の機能が提供できるスタイルあったほうが、競合に先行されお客様を取られてしまったりするリスクが低くなるため、フロー効率への関心が高くなる
 
-![%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88_2023-04-15_20.30.17.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/521bfabc-4589-4023-af1d-c7e9f5922659/ba218c1d-0ef4-4552-b2aa-58e4f4ca6942/%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88_2023-04-15_20.30.17.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45HZZMZUHI%2F20240525%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20240525T115718Z&X-Amz-Expires=3600&X-Amz-Signature=010698299b5c092debedc8e80c41f12665ae0f965977e5379b75ccc4e6b9c0bd&X-Amz-SignedHeaders=host&x-id=GetObject)
+![代替テキスト](/notion/image/d972ecac-c2ac-4eab-9ab5-bd6957f9c1e8/223e22e2-1e02-49a2-8f24-0342ae487a7a.jpg)
 
