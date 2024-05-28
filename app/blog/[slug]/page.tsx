@@ -1,4 +1,12 @@
-import fs from "fs/promises"; // Node.jsのプロミス版fsモジュールを使用
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import fs from "fs/promises";
 import "zenn-content-css";
 import markdownHtml from "zenn-markdown-html";
 
@@ -29,6 +37,24 @@ export default async function Blog({ params }: { params: { slug: string } }) {
     return <></>;
   }
   return (
-    <div className="znc" dangerouslySetInnerHTML={{ __html: htmlContent }} />
+    <>
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/">Home</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>Breadcrumb</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+      <div className="max-w-5xl mx-auto p-10">
+        <div
+          className="znc"
+          dangerouslySetInnerHTML={{ __html: htmlContent }}
+        />
+      </div>
+    </>
   );
 }

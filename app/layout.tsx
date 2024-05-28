@@ -1,12 +1,14 @@
-import type { Metadata } from "next";
-import "./globals.css";
-import { Inter as FontSans } from "next/font/google"
+import { ModeToggle } from "@/components/ModeToggle";
 import { cn } from "@/lib/utils";
+import type { Metadata } from "next";
+import { ThemeProvider } from "next-themes";
+import { Inter as FontSans } from "next/font/google";
+import "./globals.css";
 
 const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
-})
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -20,10 +22,22 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={cn(
-          "min-h-screen bg-background font-sans antialiased",
-          fontSans.variable
-        )}>{children}</body>
+      <body
+        className={cn(
+          "min-h-screen bg-background font-sans antialiase",
+          fontSans.variable,
+        )}
+      >
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <ModeToggle />
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   );
 }
