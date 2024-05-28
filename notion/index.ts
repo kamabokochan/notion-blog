@@ -1,5 +1,6 @@
+import { downloadImage } from "@/notion/downloadImage";
+import { mdUrlExtraction } from "@/notion/mdUrlExtraction";
 import { Client } from "@notionhq/client";
-import axios from "axios";
 import { existsSync, mkdirSync, writeFile } from "fs";
 import { NotionToMarkdown } from "notion-to-md";
 import { MdBlock } from "notion-to-md/build/types";
@@ -20,68 +21,70 @@ const notion = new Client({
 // passing notion client to the option
 const n2m = new NotionToMarkdown({ notionClient: notion });
 
-function getImageUrl(MDImage: string) {
-  const startIdx = MDImage.indexOf("(");
-  const endIdx = MDImage.lastIndexOf(")");
-  const altText = MDImage.substring(2, startIdx).trim();
-  const url = MDImage.substring(startIdx + 1, endIdx).trim();
+async function saveImage(mdblock: MdBlock, blockId: string) {
+  const imageUrl = mdUrlExtraction(mdblock.parent);
+  const filePath = `notion/image/${blockId}/${mdblock.blockId}.jpg`;
+  const fullPath = `public/${filePath}`;
+  const directory = path.dirname(`public/${filePath}`);
 
-  return url;
-}
+  // ファイルがすでに存在している場合は何もせずに終了
+  if (existsSync(fullPath)) {
+    mdblock.parent = `![代替テキスト](/${filePath})`;
+    return mdblock;
+  }
 
-function saveImage(mdblocks: MdBlock[], blockId: string) {
-  return mdblocks.map(async (MdBlock) => {
-    console.log(MdBlock);
-    if (MdBlock.type === "image") {
-      const imageUrl = getImageUrl(MdBlock.parent);
-      const filePath = `notion/image/${blockId}/${MdBlock.blockId}.jpg`;
-      const fullPath = `public/${filePath}`;
-      const directory = path.dirname(`public/${filePath}`);
+  // ディレクトリが存在しない場合は作成
+  mkdirSync(directory, { recursive: true });
 
-      // ファイルがすでに存在している場合は何もせずに終了
-      if (existsSync(fullPath)) {
-        return MdBlock;
-      }
-
-      // ディレクトリが存在しない場合は作成
-      mkdirSync(directory, { recursive: true });
-
-      // https://byby.dev/node-download-image
-      const response = await axios.get(imageUrl, {
-        responseType: "arraybuffer",
-      });
-
-      writeFile(fullPath, response.data, (err) => {
-        console.error(err);
-      });
-
-      // ![代替テキスト](画像のURL)
-      MdBlock.parent = `![代替テキスト](/${filePath})`;
-    }
-    return MdBlock;
-  });
+  try {
+    await downloadImage(imageUrl, fullPath);
+    // ![代替テキスト](画像のURL)
+    mdblock.parent = `![代替テキスト](/${filePath})`;
+  } catch (error) {
+    console.error(error);
+  }
+  return mdblock;
 }
 
 (async () => {
   const databaseId = "044ded07ab224cd1b2e1b853550740d0";
 
-  const response = await notion.databases.query({
+  // DBからデータ取得
+  const { results } = await notion.databases.query({
     database_id: databaseId,
   });
 
-  // console.log(response.results[0].id);
-
-  [response.results[3]].forEach(async (block) => {
+  results.forEach(async (block) => {
     const blockId = block.id;
-    const mdblocks = await n2m.pageToMarkdown(blockId);
+    const mdBlocks = await n2m.pageToMarkdown(blockId);
 
-    // 画像の保存と相対パスへの置換を行う
-    const newMdBlock = await Promise.all(saveImage(mdblocks, blockId));
+    const mdBlockFactory = async (block: MdBlock): Promise<MdBlock> => {
+      // 各mdのブロックに対し、画像だった場合にローカルへの保存とその保存先の相対パスに置換する
+      if (block.type === "image") {
+        return await saveImage(block, blockId);
+      }
 
-    const mdString = n2m.toMarkdownString(newMdBlock).parent;
+      if (block.children.length !== 0) {
+        const newChildrenMdBlock = await Promise.all(
+          block.children.map(async (block) => await mdBlockFactory(block)),
+        );
+        return {
+          ...block,
+          children: newChildrenMdBlock,
+        };
+      }
 
+      return block;
+    };
+
+    const newMdBlocks = await Promise.all(
+      mdBlocks.map(async (block) => await mdBlockFactory(block)),
+    );
+
+    const mdString = n2m.toMarkdownString(newMdBlocks).parent;
+
+    // 中身が空のページが存在している場合に、msStringはundifinedになるため処理を終了する
     if (typeof mdString !== "string") {
-      // string以外は許容しない
       return;
     }
 
