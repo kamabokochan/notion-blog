@@ -1,4 +1,3 @@
-import { ModeToggle } from "@/components/ModeToggle";
 import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
 import { ThemeProvider } from "next-themes";
@@ -34,8 +33,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <ModeToggle />
-          {children}
+          <main>{children}</main>
         </ThemeProvider>
       </body>
     </html>

@@ -29,6 +29,14 @@ export default async function Home() {
   return (
     <ul className="grid grid-cols-3 gap-8 max-w-5xl mx-auto p-10">
       {response.results.map((post, index) => {
+        const publicFlag =
+          response.results[index].properties.public_status.select.name ===
+          "public";
+
+        if (!publicFlag) {
+          return <></>;
+        }
+
         return (
           <li key={post.id}>
             <a href={`/blog/${post.id}`}>
@@ -40,7 +48,6 @@ export default async function Home() {
                         .plain_text
                     }
                   </CardTitle>
-                  {/* <CardDescription>description</CardDescription> */}
                 </CardHeader>
                 <CardContent className="p-3.5">
                   {
@@ -48,9 +55,6 @@ export default async function Home() {
                       .properties.title.title[0].text.content
                   }
                 </CardContent>
-                {/* <CardFooter>
-                  <p>Card Footer</p>
-                </CardFooter> */}
               </Card>
             </a>
           </li>
