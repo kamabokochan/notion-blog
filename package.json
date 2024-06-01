@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "notion-fetch": "tsx --env-file .env notion/index.ts"
+    "notion-fetch": "tsx --env-file .env notion/index.ts",
+    "serve": "npx serve ./out"
   },
   "dependencies": {
     "@notionhq/client": "^2.2.15",

@@ -6,7 +6,9 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { readdirSync } from "fs";
 import fs from "fs/promises";
+import path from "path";
 import "zenn-content-css";
 import markdownHtml from "zenn-markdown-html";
 
@@ -28,6 +30,18 @@ async function getHtmlContents(slug: string) {
   }
   const htmlContent = markdownHtml(markdownContent);
   return htmlContent;
+}
+
+export function generateStaticParams() {
+  const files = readdirSync("notion/post/");
+  const fileNames = files.map((file) => {
+    const name = path.parse(file).name;
+    return {
+      slug: name,
+    };
+  });
+
+  return fileNames;
 }
 
 export default async function Blog({ params }: { params: { slug: string } }) {
