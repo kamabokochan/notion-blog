@@ -23,10 +23,10 @@ async function fetchBlogPosts() {
   return response;
 }
 
-function getProperties(post: QueryDatabaseResponse["results"][number]) {
+export function getProperties(post: QueryDatabaseResponse["results"][number]) {
   // @watch https://github.com/makenotion/notion-sdk-js/issues/475
   let publicStatus;
-  let iconText;
+  let emoji;
   let title;
   if (
     "properties" in post &&
@@ -36,12 +36,8 @@ function getProperties(post: QueryDatabaseResponse["results"][number]) {
   ) {
     publicStatus = post.properties.public_status.select.name;
   }
-  if (
-    "properties" in post &&
-    "rich_text" in post.properties.icon &&
-    Array.isArray(post.properties.icon.rich_text)
-  ) {
-    iconText = post.properties.icon.rich_text[0].plain_text;
+  if ("icon" in post && post.icon !== null && "emoji" in post.icon) {
+    emoji = post.icon.emoji;
   }
   if (
     "properties" in post &&
@@ -53,7 +49,7 @@ function getProperties(post: QueryDatabaseResponse["results"][number]) {
 
   return {
     publicStatus,
-    iconText,
+    emoji,
     title,
   };
 }
@@ -64,7 +60,7 @@ export default async function Home() {
   return (
     <ul className="grid grid-cols-3 gap-8 max-w-5xl mx-auto p-10">
       {response.results.map((post) => {
-        const { publicStatus, iconText, title } = getProperties(post);
+        const { publicStatus, emoji, title } = getProperties(post);
 
         if (publicStatus !== "public") {
           return <Fragment key={post.id}></Fragment>;
@@ -75,7 +71,7 @@ export default async function Home() {
             <a href={`/blog/${post.id}`}>
               <Card className="h-full overflow-hidden">
                 <CardHeader className="items-center">
-                  <CardTitle className="text-5xl">{iconText}</CardTitle>
+                  <CardTitle className="text-5xl">{emoji}</CardTitle>
                 </CardHeader>
                 <CardContent className="p-3.5">{title}</CardContent>
               </Card>
