@@ -23,7 +23,7 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={cn(
-          "min-h-screen bg-background font-sans antialiase",
+          "min-h-screen font-sans antialiase bg-[#272520]",
           fontSans.variable,
         )}
       >
@@ -33,6 +33,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <header className="h-16 bg-[#1e1c19] flex items-center px-6">
+            <a href="/">ホーム</a>
+          </header>
           <main>{children}</main>
         </ThemeProvider>
       </body>
