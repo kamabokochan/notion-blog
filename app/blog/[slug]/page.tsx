@@ -1,4 +1,4 @@
-import { getProperties } from "@/app/page";
+import { getProperties } from "@/utils/notion/getPageProperties";
 import { Client, isFullPage } from "@notionhq/client";
 import { readdirSync } from "fs";
 import fs from "fs/promises";
