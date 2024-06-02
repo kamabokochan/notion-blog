@@ -66,8 +66,8 @@ export default async function Blog({ params }: { params: { slug: string } }) {
     const { emoji, title } = getProperties(pageInfo);
     return (
       <>
-        <div className="max-w-5xl mx-auto p-10">
-          <div className="py-14">
+        <div className="p-10">
+          <div className="py-14 max-w-5xl mx-auto">
             <p className="text-[75px] leading-none text-center">{emoji}</p>
             <h1 className="text-3xl font-bold mt-5 text-[#dcdbbf]">{title}</h1>
             <div className="mt-5 text-xs text-right text-[#b7a992]">
@@ -76,7 +76,7 @@ export default async function Blog({ params }: { params: { slug: string } }) {
             </div>
           </div>
           <div
-            className="znc p-10 bg-[#1e1c19] border-solid border border-[#3c3e3c] rounded text-[#dcdbbf]"
+            className="znc max-w-[1120px] mx-auto p-10 bg-[#1e1c19] border-solid border border-[#3c3e3c] rounded text-[#dcdbbf]"
             dangerouslySetInnerHTML={{ __html: htmlContent }}
           />
         </div>

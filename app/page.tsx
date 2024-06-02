@@ -69,8 +69,8 @@ export default async function Home() {
         return (
           <li key={post.id}>
             <a href={`/blog/${post.id}`}>
-              <Card className="h-full overflow-hidden">
-                <CardHeader className="items-center">
+              <Card className="h-full overflow-hidden bg-[#1e1c19] border-solid border border-[#3c3e3c]">
+                <CardHeader className="items-center bg-[#2e2d28]">
                   <CardTitle className="text-5xl">{emoji}</CardTitle>
                 </CardHeader>
                 <CardContent className="p-3.5">{title}</CardContent>

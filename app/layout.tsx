@@ -33,6 +33,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <header className="h-16 bg-[#1e1c19] flex items-center px-6">
+            <a href="/">ホーム</a>
+          </header>
           <main>{children}</main>
         </ThemeProvider>
       </body>
